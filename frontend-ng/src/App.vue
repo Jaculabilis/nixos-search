@@ -202,8 +202,20 @@ function submit() {
 </script>
 
 <template>
+  <header>
+    <a href="https://nixos.org"><img alt="Nix" class="logo" src="./assets/logo-default.svg" /></a>
+    <div>
+      <ul>
+        <li><a href="https://nixos.org">Back to nixos.org</a></li>
+        <li class="active"><a href="#">Packages</a></li>
+        <li><a href="#">NixOS options</a></li>
+        <li><a href="#">Flakes <sup>Experimental</sup></a></li>
+      </ul>
+    </div>
+  </header>
+
   <main>
-    <h1>Search more than <strong>2 packages</strong></h1>
+    <h1>Search more than <strong>120 000 packages</strong></h1>
 
     <form @submit.prevent="submit">
       <div style="display: grid; grid-template-columns: auto 8em;">
@@ -234,6 +246,78 @@ function submit() {
 </template>
 
 <style scoped>
+header {
+  display: block;
+  min-height: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: 1px solid #d4d4d4;
+
+  background-color: #fafafa;
+  background-image: linear-gradient(180deg,#fff,#f2f2f2);
+  background-repeat: repeat-x;
+
+  border-radius: 0;
+  border-width: 0 0 1px;
+
+  -webkit-box-shadow: 0 1px 10px rgba(0,0,0,.1);
+  -moz-box-shadow: 0 1px 10px rgba(0,0,0,.1);
+  box-shadow: 0 1px 10px rgba(0,0,0,.1);
+
+  overflow: visible;
+  margin-bottom: 0;
+  position: static;
+  border-width: 0 0 1px;
+  overflow: visible;
+}
+header::after {
+  clear: both;
+}
+header img.logo {
+  height: 2.7em;
+  float: left;
+}
+header ul {
+  display: block;
+  float:left;
+  left: 0;
+  margin: 0 10px 0 0;
+  position: relative;
+  list-style: none;
+}
+header li {
+  float: left;
+  line-height: 20px;
+}
+header li a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #777;
+}
+header li a:focus, header li a:hover {
+  color: #333;
+}
+header li.active a {
+  background-color: #e5e5e5;
+  color: #555;
+  box-shadow: inset 0 3px 8px rgba(0,0,0,.125);
+}
+header sup {
+  top: -.5em;
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+  
+  color: #fff;
+  background-color: #007dbb;
+  font-weight: 700;
+  padding: 2px 4px;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
+  border-radius: 3px;
+}
+
 main h1 {
   font-weight: 400;
 }
