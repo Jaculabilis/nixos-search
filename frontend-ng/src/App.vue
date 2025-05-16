@@ -453,6 +453,12 @@ main .search-results {
 }
 
 footer {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 4rem;
+  width: 100%;
   text-align: center;
   font-size: 14px;
   line-height: 20px;
