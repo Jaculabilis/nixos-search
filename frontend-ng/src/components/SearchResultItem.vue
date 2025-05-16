@@ -18,12 +18,12 @@ const programs = computed(() => {
 </script>
 
 <template>
-  <li>
+  <li class="search-result-item">
     <span><a href="">{{ data.package_attr_name }}</a></span>
-    <div>{{ data.package_attr_description }}</div>
+    <div class="description">{{ data.package_description }}</div>
     <ul>
       <li>Name: {{ data.package_pname }}</li>
-      <li v-if="data.package_pversion">Version: {{ data.package_pversion }}</li>
+      <li v-if="data.package_pversion">Version: <strong>{{ data.package_pversion }}</strong></li>
       <li v-if="data.package_homepage.length > 0"><a v-bind:href="data.package_homepage">&#x1f310; Homepage</a></li>
       <li><a v-bind:href="githubUrl(data.package_position)">&#x1F4E6; Source</a></li>
       <li v-if="data.package_license.length > 0">
@@ -39,8 +39,8 @@ const programs = computed(() => {
     <details>
       <summary>Package details</summary>
       <p v-html="data.package_longDescription"></p>
-      <h4>Programs provided:</h4>
-      <p>
+      <h4>Programs provided</h4>
+      <p v-if="programs.length > 0">
         <template v-for="(program, index) in programs">
           {{ index > 0 ? " " : "" }}
           <code>
@@ -48,10 +48,10 @@ const programs = computed(() => {
           </code>
         </template>
       </p>
+      <p v-else>This package provides no programs.</p>
       <div>
         <h4>Maintainers</h4>
-        <ul>
-          <li v-if="data.package_maintainers.length == 0">No maintainers</li>
+        <ul v-if="data.package_maintainers.length > 0">
           <li v-for="maintainer in data.package_maintainers">
             <MaintainerInfo :maintainer="maintainer" />
           </li>
@@ -67,6 +67,7 @@ const programs = computed(() => {
             </code>
           </li>
         </ul>
+        <p v-else>This package has no maintainers. If you find it useful, please consider becoming a maintainer!</p>
       </div>
       <div v-if="data.package_teams.length > 0">
         <h4>Teams</h4>
@@ -89,6 +90,37 @@ const programs = computed(() => {
 </template>
 
 <style scoped>
+.search-result-item {
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid gray;
+}
+.search-result-item .description {
+  font-size: 1.2em;
+}
+.search-result-item > ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+.search-result-item > ul > li {
+  display: inline-block;
+  margin-right: 1em;
+  color: #666;
+}
+.search-result-item > details > summary {
+  margin-top: 10px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+}
+.search-result-item > details > summary::marker {
+  content: "\1F4C1  "
+}
+.search-result-item > details[open] > summary::marker {
+  content: "\1F4C2  "
+}
+
 code {
   background-color: #f7f7f9;
   border: 1px solid #e1e1e8;

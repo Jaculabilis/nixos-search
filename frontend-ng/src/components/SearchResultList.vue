@@ -8,11 +8,16 @@ defineProps<{
 
 <template>
   <ul>
-    <li v-for="(data, index) in dataList" :key="index">
-      <SearchResultItem :data="data" />
-    </li>
+    <template v-for="(data, index) in dataList" :key="index">
+      <li>
+        <SearchResultItem :data="data" />
+      </li>
+    </template>
   </ul>
 </template>
 
 <style scoped>
+ul {
+  list-style: none;
+}
 </style>
