@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import MaintainerInfo  from "./MaintainerInfo.vue";
 
 const props = defineProps<{
   data: any
@@ -47,6 +48,22 @@ const programs = computed(() => {
           </code>
         </template>
       </p>
+      <div>
+        <h4>Maintainers</h4>
+        <ul>
+          <li v-if="data.package_maintainers.length == 0">No maintainers</li>
+          <li v-for="maintainer in data.package_maintainers">
+            <MaintainerInfo :maintainer="maintainer" />
+          </li>
+          <li v-if="data.package_maintainers.length > 1">Mail to all maintainers</li>
+          <li style="user-select: none;">
+            Maintainer GitHub handles:
+            <code style="user-select: text;">
+              {{ data.package_maintainers.map((m: any) => m ? `@${m.github}` : "").join(" ") }}
+            </code>
+          </li>
+        </ul>
+      </div>
     </details>
   </li>
 </template>
