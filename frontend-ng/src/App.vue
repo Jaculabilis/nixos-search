@@ -226,7 +226,10 @@ function submit() {
           placeholder="Search for packages"
           v-model="query"
         />
-        <button class="btn" type="submit">Search</button>
+        <button class="btn" type="submit">
+          {{ !waiting ? "Search" : "" }}
+          <img id="spinner" v-if="waiting" class="logo" src="./assets/logo-black.svg" />
+        </button>
       </div>
       <div class="channel">
         <h2>Channel: </h2>
@@ -238,8 +241,6 @@ function submit() {
         </div>
       </div>
     </form>
-    <!-- Currently this breaks after the first query. idk why yet. -->
-    <img id="spinner" v-if="waiting" class="logo" src="./assets/logo-black.svg" />
     <p>Current query: {{ query }}{{ waiting ? " (waiting)" : "" }}</p>
     <p>Current channel: {{ channel }}</p>
     <p>Queries: {{ queries }}</p>
@@ -396,8 +397,9 @@ main .channel-buttons input[type="radio"]:checked + label {
   }
 }
 #spinner {
-  width: 3em;
-  height: 3em;
+  width: 1.5em;
+  height: 1.5em;
   animation: rotation 2s infinite linear;
+  vertical-align: middle;
 }
 </style>
