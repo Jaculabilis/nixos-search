@@ -218,7 +218,7 @@ function submit() {
     <h1>Search more than <strong>120 000 packages</strong></h1>
 
     <form @submit.prevent="submit">
-      <div style="display: grid; grid-template-columns: auto 8em;">
+      <div class="search">
         <input
           id="search-query-input"
           type="text"
@@ -226,13 +226,17 @@ function submit() {
           placeholder="Search for packages"
           v-model="query"
         />
-        <button type="submit">Search</button>
+        <button class="btn" type="submit">Search</button>
       </div>
-      Channel:
-      <template v-for="chan in channels">
-        <input type="radio" :id="chan" :value="chan" v-model="channel" />
-        <label :for="chan">{{ chan }}</label>
-      </template>
+      <div class="channel">
+        <h2>Channel: </h2>
+        <div class="channel-buttons">
+          <template v-for="chan in channels">
+            <input type="radio" :id="chan" :value="chan" v-model="channel" />
+            <label class="btn" :for="chan">{{ chan }}</label>
+          </template>
+        </div>
+      </div>
     </form>
     <!-- Currently this breaks after the first query. idk why yet. -->
     <img id="spinner" v-if="waiting" class="logo" src="./assets/logo-black.svg" />
@@ -318,8 +322,69 @@ header sup {
   border-radius: 3px;
 }
 
+main {
+  margin: 0 20px;
+}
 main h1 {
+  font-size: 2.3em;
   font-weight: 400;
+}
+main h1::before {
+  content: "\2315";
+  display: inline-block;
+  font-family: monospace;
+  font-size: 2em;
+  margin-right: .2em;
+  transform: translateY(.15em) scaleX(-1);
+}
+main .btn {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-image: -moz-linear-gradient(top,#fff,#e6e6e6);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#e6e6e6));
+  background-image: -webkit-linear-gradient(top,#fff,#e6e6e6);
+  background-image: -o-linear-gradient(top,#fff,#e6e6e6);
+  background-image: linear-gradient(180deg,#fff,#e6e6e6);
+  background-repeat: repeat-x;
+  padding: 4px 12px;
+  text-align: center;
+  text-shadow: 0 1px 1px hsla(0,0%,100%,.75);
+}
+main .search {
+  display: grid;
+  grid-template-columns: auto 8em;
+}
+main .search input {
+  font-size: 18px;
+  height: 40px;
+}
+main .search button {
+  font-size: 24px;
+}
+main .channel {
+  vertical-align: middle;
+  margin-top: 10px;
+}
+main .channel h2 {
+  display: inline;
+  font-size: 1.2em;
+  margin-left: .2em;
+  vertical-align: middle;
+}
+main .channel-buttons {
+  display: inline-block;
+  vertical-align: middle;
+}
+main .channel-buttons input[type="radio"] {
+  display: none;
+}
+main .channel-buttons input[type="radio"] + label {
+  display: inline-block;
+}
+main .channel-buttons input[type="radio"]:checked + label {
+  background-image: none;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.15),0 1px 2px rgba(0,0,0,.05);
+  background: #e6e6e6;
 }
 
 @keyframes rotation {
