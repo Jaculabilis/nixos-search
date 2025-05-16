@@ -60,7 +60,7 @@ const programs = computed(() => {
               &#x2709; Mail to all maintainers
             </a>
           </li>
-          <li style="user-select: none;">
+          <li style="user-select: none;" v-if="data.package_maintainers.length > 1">
             Maintainer GitHub handles:
             <code style="user-select: text;">
               {{ data.package_maintainers.map((m: any) => m ? `@${m.github}` : "").join(" ") }}
