@@ -2,13 +2,15 @@
 import { ref, type Ref } from 'vue';
 import SearchResultList from './components/SearchResultList.vue';
 
+const isDev = import.meta.env.DEV;
+
 const query = ref('');
 
 const channels: string[] = JSON.parse(import.meta.env.VITE_NIXOS_CHANNELS || '["unstable"]');
 const channel = ref(channels[channels.length - 1]);
 
 const queries: Ref<string[], string[]> = ref([])
-const lastResponse = ref('');
+const lastResponse: Ref<any, any> = ref({});
 const waiting = ref(false);
 const lastResults = ref([]);
 function submit() {
@@ -190,7 +192,7 @@ function submit() {
     body: JSON.stringify(queryPayload)
   }).then(response => {
     response.json().then(data => {
-      lastResponse.value = JSON.stringify(data, null, 2);
+      lastResponse.value = data;
       lastResults.value = data.hits.hits.map((hit: any) => {
         return hit._source;
       });
@@ -241,13 +243,40 @@ function submit() {
         </div>
       </div>
     </form>
+
+    <SearchResultList :dataList="lastResults" />
+  </main>
+
+  <footer>
+    <div>
+      <span>Please help us improve search.nixos.org by <a href="#">reporting issues</a>.</span>
+    </div>
+    <div>
+      <span>❤️  </span>
+      <span>Elasticsearch instance graciously provided by </span>
+      <a href="https://bonsai.io">Bonsai</a>
+      <span>. Thank you! ❤️ </span>
+    </div>
+  </footer>
+
+  <details v-if="isDev" open>
+    <summary>state</summary>
     <p>Current query: {{ query }}{{ waiting ? " (waiting)" : "" }}</p>
     <p>Current channel: {{ channel }}</p>
     <p>Queries: {{ queries }}</p>
-    <p>Last results:</p>
-    <SearchResultList :dataList="lastResults" />
-    <pre>Last response: {{ lastResponse }}</pre>
-  </main>
+    <details>
+      <summary>Last results:</summary>
+      <pre style="font-size: 8px; line-height: normal; white-space: pre-wrap;">{{ JSON.stringify(lastResponse, null, 2) }}</pre>
+    </details>
+    <details open>
+      <summary>$.hits.hits</summary>
+      <pre style="font-size: 8px; line-height: normal; white-space: pre-wrap;" v-if="lastResponse.hits">{{ lastResponse.hits.hits }}</pre>
+    </details>
+    <details open>
+      <summary>$.aggregations</summary>
+      <pre style="font-size: 8px; line-height: normal; white-space: pre-wrap;">{{ lastResponse.aggregations }}</pre>
+    </details>
+  </details>
 </template>
 
 <style scoped>
@@ -386,6 +415,12 @@ main .channel-buttons input[type="radio"]:checked + label {
   background-image: none;
   box-shadow: inset 0 2px 4px rgba(0,0,0,.15),0 1px 2px rgba(0,0,0,.05);
   background: #e6e6e6;
+}
+
+footer {
+  text-align: center;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 @keyframes rotation {
