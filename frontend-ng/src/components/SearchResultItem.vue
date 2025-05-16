@@ -39,6 +39,9 @@ const programs = computed(() => {
     <details>
       <summary>Package details</summary>
       <p v-html="data.package_longDescription"></p>
+      <!-- TODO install instructions -->
+      <!-- <h4>Install</h4>
+      <p>todo</p> -->
       <h4>Programs provided</h4>
       <p v-if="programs.length > 0">
         <template v-for="(program, index) in programs">
@@ -85,6 +88,10 @@ const programs = computed(() => {
           </li>
         </ul>
       </div>
+      <!-- TODO filter to the "big four" (or hide the others?) and link to hydra -->
+      <!-- <div>
+        <h4>Platforms</h4>
+      </div> -->
     </details>
   </li>
 </template>

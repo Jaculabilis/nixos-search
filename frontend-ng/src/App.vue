@@ -5,6 +5,8 @@ import SidebarAggregation from './components/SidebarAggregation.vue';
 
 const isDev = import.meta.env.DEV;
 
+// TODO the state here should be persisted to the query parameters so the page refreshes to the same search
+
 const query = ref('');
 
 const channels: string[] = JSON.parse(import.meta.env.VITE_NIXOS_CHANNELS || '["unstable"]');
@@ -17,6 +19,7 @@ const lastResults = ref([]);
 function submit() {
   queries.value.push(query.value);
 
+  // TODO this needs to be refactored elsewhere and support filters
   const queryPayload = {
     "from":0,
     "size":50,
@@ -181,6 +184,7 @@ function submit() {
       }
     }
   };
+  // TODO derive this from the current channel, or configs perhaps
   const url = "https://search.nixos.org/backend/latest-43-nixos-24.11/_search";
   waiting.value = true;
   fetch(url, {
@@ -188,6 +192,7 @@ function submit() {
     headers: {
       'Content-Type': 'application/json',
       'Accept': '*/*',
+      // TODO this should come from config
       'Authorization': 'Basic YVdWU0FMWHBadjpYOGdQSG56TDUyd0ZFZWt1eHNmUTljU2g=',
     },
     body: JSON.stringify(queryPayload)
@@ -209,6 +214,7 @@ function submit() {
     <a href="https://nixos.org"><img alt="Nix" class="logo" src="./assets/logo-default.svg" /></a>
     <div>
       <ul>
+        <!-- TODO these need to change query options without reloading the page -->
         <li><a href="https://nixos.org">Back to nixos.org</a></li>
         <li class="active"><a href="#">Packages</a></li>
         <li><a href="#">NixOS options</a></li>
