@@ -1,47 +1,31 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
   <main>
-    <TheWelcome />
+    <h1>Search more than <strong>2 packages</strong></h1>
+
+    <form>
+      <div style="display: grid; grid-template-columns: auto 8em;">
+        <input
+          id="search-query-input"
+          type="text"
+          autofocus
+          placeholder="Search for packages"
+        />
+        <button type="submit">Search</button>
+      </div>
+      Channel:
+      <input type="radio" id="24.11" name="channel" value="24.11" checked />
+      <label for="24.11">24.11</label>
+      <input type="radio" id="unstable" name="channel" value="unstable" />
+      <label for="unstable">Unstable</label>
+    </form>
   </main>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+main h1 {
+  font-weight: 400;
 }
 </style>
