@@ -68,6 +68,22 @@ const programs = computed(() => {
           </li>
         </ul>
       </div>
+      <div v-if="data.package_teams.length > 0">
+        <h4>Teams</h4>
+        <ul>
+          <li v-for="team in data.package_teams">
+            {{ team.shortName }}:
+            <a
+              v-if="team.githubTeams.length > 0"
+              v-bind:href="`https://github.com/orgs/NixOS/teams/${team.githubTeams[0]}`"
+            >
+              @NixOS/{{ team.githubTeams[0] }}
+            </a>
+            <br />
+            <em>{{ team.scope }}</em>
+          </li>
+        </ul>
+      </div>
     </details>
   </li>
 </template>
