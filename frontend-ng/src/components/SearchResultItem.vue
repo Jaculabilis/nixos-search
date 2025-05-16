@@ -2,6 +2,13 @@
 defineProps<{
   data: any
 }>()
+
+function githubUrl(position: string): string {
+  let path = position.replace(":", "#L");
+  let branch = "nixos-24.11"; // TODO
+  return `https://github.com/NixOS/nixpkgs/blob/${branch}/${path}`
+}
+
 </script>
 
 <template>
@@ -10,10 +17,18 @@ defineProps<{
     <div>{{ data.package_attr_description }}</div>
     <ul>
       <li>Name: {{ data.package_pname }}</li>
-      <li>Version: {{ data.package_pversion }}</li>
-      <li><a href="">Homepage</a></li>
-      <li><a href="">Source</a></li>
-      <li>License: <a v-bind:href="data.package_license[0].url">{{ data.package_license[0].fullName }}</a></li>
+      <li v-if="data.package_pversion">Version: {{ data.package_pversion }}</li>
+      <li v-if="data.package_homepage.length > 0"><a v-bind:href="data.package_homepage">&#x1f310; Homepage</a></li>
+      <li><a v-bind:href="githubUrl(data.package_position)">&#x1F4E6; Source</a></li>
+      <li v-if="data.package_license.length > 0">
+        {{ data.package_license.length == 1 ? "License" : "Licenses" }}:
+        <template v-for="(license, index) in data.package_license">
+          {{ index > 0 ? " ▪ " : "" }}
+          <a v-bind:href="license.url">
+            {{ license.fullName }}
+          </a>
+        </template>
+      </li>
     </ul>
     <details>
       <summary>Package details</summary>
