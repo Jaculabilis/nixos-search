@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{
+import { computed } from "vue";
+
+const props = defineProps<{
   data: any
 }>()
 
@@ -9,6 +11,9 @@ function githubUrl(position: string): string {
   return `https://github.com/NixOS/nixpkgs/blob/${branch}/${path}`
 }
 
+const programs = computed(() => {
+  return props.data.package_programs.toSorted();
+});
 </script>
 
 <template>
@@ -33,9 +38,25 @@ function githubUrl(position: string): string {
     <details>
       <summary>Package details</summary>
       <p v-html="data.package_longDescription"></p>
+      <h4>Programs provided:</h4>
+      <p>
+        <template v-for="(program, index) in programs">
+          {{ index > 0 ? " " : "" }}
+          <code>
+            {{ program }}
+          </code>
+        </template>
+      </p>
     </details>
   </li>
 </template>
 
 <style scoped>
+code {
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
+  color: #d14;
+  padding: 2px 4px;
+  white-space: nowrap;
+}
 </style>
