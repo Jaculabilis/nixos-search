@@ -7,6 +7,7 @@ const channel = ref('24.11');
 
 const queries: Ref<string[], string[]> = ref([])
 const lastResponse = ref('');
+const waiting = ref(false);
 const lastResults = ref([]);
 function submit() {
   queries.value.push(query.value);
@@ -176,6 +177,7 @@ function submit() {
     }
   };
   const url = "https://search.nixos.org/backend/latest-43-nixos-24.11/_search";
+  waiting.value = true;
   fetch(url, {
     method: 'POST',
     headers: {
@@ -191,6 +193,8 @@ function submit() {
         return hit._source;
       });
     })
+  }).finally(() => {
+    waiting.value = false;
   });
 }
 </script>
@@ -216,7 +220,9 @@ function submit() {
       <input type="radio" id="unstable" value="unstable" v-model="channel" />
       <label for="unstable">Unstable</label>
     </form>
-    <p>Current query: {{ query }}</p>
+    <!-- Currently this breaks after the first query. idk why yet. -->
+    <img id="spinner" v-if="waiting" class="logo" src="./assets/logo-black.svg" />
+    <p>Current query: {{ query }}{{ waiting ? " (waiting)" : "" }}</p>
     <p>Current channel: {{ channel }}</p>
     <p>Queries: {{ queries }}</p>
     <p>Last results:</p>
@@ -228,5 +234,19 @@ function submit() {
 <style scoped>
 main h1 {
   font-weight: 400;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+#spinner {
+  width: 3em;
+  height: 3em;
+  animation: rotation 2s infinite linear;
 }
 </style>
