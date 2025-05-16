@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import SearchResultList from './components/SearchResultList.vue';
+import SidebarAggregation from './components/SidebarAggregation.vue';
 
 const isDev = import.meta.env.DEV;
 
@@ -244,7 +245,18 @@ function submit() {
       </div>
     </form>
 
-    <SearchResultList :dataList="lastResults" />
+    <div class="search-results">
+      <ul class="search-sidebar" v-if="lastResponse.aggregations">
+        <SidebarAggregation title="Package sets" :agg="lastResponse.aggregations.package_attr_set" />
+        <SidebarAggregation title="Licenses" :agg="lastResponse.aggregations.package_license_set" />
+        <SidebarAggregation title="Maintainers" :agg="lastResponse.aggregations.package_maintainers_set" />
+        <SidebarAggregation title="Teams" :agg="lastResponse.aggregations.package_teams_set" />
+        <SidebarAggregation title="Platforms" :agg="lastResponse.aggregations.package_platforms" />
+      </ul>
+      <div>
+        <SearchResultList :dataList="lastResults" />
+      </div>
+    </div>
   </main>
 
   <footer>
@@ -415,6 +427,29 @@ main .channel-buttons input[type="radio"]:checked + label {
   background-image: none;
   box-shadow: inset 0 2px 4px rgba(0,0,0,.15),0 1px 2px rgba(0,0,0,.05);
   background: #e6e6e6;
+}
+
+.search-sidebar {
+  list-style: none;
+  width: 25em;
+}
+.search-sidebar > li {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1em;
+  padding: 1em;
+}
+.search-sidebar {
+  padding: 0;
+}
+.sidebar-header {
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-bottom: .5em;
+}
+main .search-results {
+  display: flex;
+  flex-direction: row;
 }
 
 footer {
