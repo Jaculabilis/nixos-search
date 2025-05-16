@@ -3,7 +3,9 @@ import { ref, type Ref } from 'vue';
 import SearchResultList from './components/SearchResultList.vue';
 
 const query = ref('');
-const channel = ref('24.11');
+
+const channels: string[] = JSON.parse(import.meta.env.VITE_NIXOS_CHANNELS || '["unstable"]');
+const channel = ref(channels[channels.length - 1]);
 
 const queries: Ref<string[], string[]> = ref([])
 const lastResponse = ref('');
@@ -215,10 +217,10 @@ function submit() {
         <button type="submit">Search</button>
       </div>
       Channel:
-      <input type="radio" id="24.11" value="24.11" v-model="channel" />
-      <label for="24.11">24.11</label>
-      <input type="radio" id="unstable" value="unstable" v-model="channel" />
-      <label for="unstable">Unstable</label>
+      <template v-for="chan in channels">
+        <input type="radio" :id="chan" :value="chan" v-model="channel" />
+        <label :for="chan">{{ chan }}</label>
+      </template>
     </form>
     <!-- Currently this breaks after the first query. idk why yet. -->
     <img id="spinner" v-if="waiting" class="logo" src="./assets/logo-black.svg" />
