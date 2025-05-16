@@ -55,7 +55,11 @@ const programs = computed(() => {
           <li v-for="maintainer in data.package_maintainers">
             <MaintainerInfo :maintainer="maintainer" />
           </li>
-          <li v-if="data.package_maintainers.length > 1">Mail to all maintainers</li>
+          <li v-if="data.package_maintainers.length > 1">
+            <a v-bind:href="`mailto:${data.package_maintainers.map((m: any) => m.email ? m.email : '').join(',')}`">
+              &#x2709; Mail to all maintainers
+            </a>
+          </li>
           <li style="user-select: none;">
             Maintainer GitHub handles:
             <code style="user-select: text;">
